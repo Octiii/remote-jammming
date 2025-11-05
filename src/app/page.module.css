@@ -1,0 +1,90 @@
+/* page.module.css */
+.mainContainer {
+  padding: 2rem;
+  background-color: #eee;
+  color: black;
+}
+
+.title {
+  color: blue;
+  font-size: 2rem;
+}
+
+.appContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+
+.searchResults {
+  width: 50%;
+  background-color: #f0f8ff; 
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.playlist {
+  width: 50%;
+  background-color: #fffacd; 
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* components/SearchBar.module.css */
+.searchInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px; /* Add some space below the search bar */
+  width: 100%; /* Make it fill its container */
+  box-sizing: border-box; /* Include padding and border in the width */
+  background-color: #ffffff; /* Set background to white */
+  color: #333; /* Set text color */
+}
+
+.searchInput::placeholder {
+  color: #999; /* Style the placeholder text */
+}
+
+.nameBar {
+  background-color: white;
+}
+
+/* --- Styles for the SAVE TO SPOTIFY Button --- */
+.saveButton {
+  background-color: #1DB954; /* Spotify Green! */
+  color: white; /* White text */
+  font-size: 1.2rem; /* Larger font */
+  font-weight: bold; /* Bold text */
+  padding: 15px 30px; /* More padding */
+  border: none; /* No border */
+  border-radius: 50px; /* Fully rounded corners for a pill shape */
+  cursor: pointer; /* Indicates it's clickable */
+  margin-top: 20px; /* Space above the button */
+  width: 80%; /* Make it wide */
+  align-self: center; /* Center the button in the flex container */
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth hover effects */
+  text-transform: uppercase; /* All caps text */
+  letter-spacing: 1px; /* A little space between letters */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+}
+
+.saveButton:hover {
+  background-color: #1ed760; /* Slightly lighter green on hover */
+  transform: translateY(-2px); /* Lift button slightly on hover */
+}
+
+.saveButton:active {
+  background-color: #1aa34e; /* Slightly darker green when clicked */
+  transform: translateY(0); /* Reset lift when clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05); /* Smaller shadow when clicked */
+}
+
+/* Ensure the main playlist container is a flex column to center the button */
+.playlist {
+  /* ... existing styles ... */
+  display: flex; /* Make it a flex container */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally within the playlist div */
+}
