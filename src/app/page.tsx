@@ -1,10 +1,11 @@
 "use client"
 import styles from "./page.module.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import SearchBar from '../../components/SearchBar';
 import SearchResults from "../../components/SearchResults";
 import PlayList from "../../components/TrackList";
+import { Spotify } from "./lib/spotify"
 
 export default function Home() {
 
@@ -14,6 +15,12 @@ export default function Home() {
     { id: '3', name: 'Stairway to Heaven', artist: 'Led Zeppelin', album: 'Led Zeppelin IV' }
   ];
 
+// useEffect(() => {
+//     // This will either get the token or redirect to Spotify
+//     console.log("Running getAccessToken..."); // For debugging
+//     Spotify.getAccessToken(); 
+//   }, []);
+  
   interface song {
     id:string;
     name:string;
