@@ -16,6 +16,7 @@ This project is built using React (with Next.js) and TypeScript, and it connects
 ## 📈 Project Status
 
 This project is currently in development. The local user interface and state management are complete, and the next step is to integrate the Spotify API.
+Edit: The API is now implemented and users can search for songs on Spotify, add them to a play list, name the play list and save it to their account. 
 
 ### Implemented Features (Local State)
 
@@ -28,15 +29,17 @@ This project is currently in development. The local user interface and state man
 * **State Management:** All state (`searchTerm`, `playlistTracks`, `playlistName`) is managed in the parent `Home` component (`page.tsx`) and passed down as props.
 * **Remote Dev Environment:** The project is running successfully in a `code-server` instance on a remote server.
 * **Version Control:** The project is an active Git repository pushed to GitHub.
-
-### To-Do / Next Steps
-
 * **Implement Spotify Authentication:** Get a user access token from the Spotify API.
 * **Connect Search to API:** Update the search functionality to query the Spotify Search endpoint instead of using mock data.
 * **Connect Save to API:** Implement the "Save to Spotify" button to:
     1.  Get the user's Spotify ID.
     2.  Create a new, empty playlist on their account.
     3.  Add the tracks from the `playlistTracks` state to that new playlist.
+
+### To-Do / Next Steps
+
+Search and Destory bugs. 
+I am sure there are imporvments to be made, I just don't know what yet.
 
 ---
 
@@ -57,7 +60,7 @@ This project is being developed on a remote server using `code-server`.
 ### 1. Prerequisites
 
 * A remote server running `code-server` (or a local machine with Node.js v18+).
-* A registered application on the [Spotify Developer Dashboard](http://googleusercontent.com/spotify.com/3).
+* A registered application on the [Spotify Developer Dashboard]
 
 ### 2. Installation & Setup
 
