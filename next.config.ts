@@ -1,11 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: '/app'
+
+  allowedDevOrigins: ["dev.ningun.eu", "https://dev.ningun.eu/"],
+
 };
 
-module.exports = {
-  allowedDevOrigins: ["https://dev.ningun.eu"],
-}
+
 
 export default nextConfig;

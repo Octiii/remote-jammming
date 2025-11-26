@@ -9,63 +9,107 @@ import { Spotify } from "./lib/spotify"
 
 export default function Home() {
 
-  const dummySearchResults = [
-    { id: '1', name: 'Tiny Dancer', artist: 'Elton John', album: 'Madman Across the Water' },
-    { id: '2', name: 'Bohemian Rhapsody', artist: 'Queen', album: 'A Night at the Opera' },
-    { id: '3', name: 'Stairway to Heaven', artist: 'Led Zeppelin', album: 'Led Zeppelin IV' }
-  ];
+  const [token, setToken] = useState<string>("");
+   
+  const [profile, setProfile] = useState<any>(null);
 
-// useEffect(() => {
-//     // This will either get the token or redirect to Spotify
-//     console.log("Running getAccessToken..."); // For debugging
-//     Spotify.getAccessToken(); 
-//   }, []);
-  
-  interface song {
-    id:string;
-    name:string;
-    artist:string;
-    album:string;
-  }
+  useEffect(() => {
+    // This function handles the login logic
+    const initiateLogin = async () => {
+      // 1. Check if we have a code in the URL (Coming back from Spotify)
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
 
-  const [playlistTracks, setPlalistTracks] = useState<song[]>([]); 
+      if (code) {
+        // We have a code! Swap it for a token.
+        const accessToken = await Spotify.getAccessToken(code);
+        setToken(accessToken);
+        const profileData = await Spotify.getProfile(accessToken);
+        setProfile(profileData);
+        // Clean the URL
+        window.history.pushState({}, "", "/");
+      } else {
+        // 2. No code. Do we have a token already? (Optional: add local storage check here later)
+        // If not, start the login flow.
+        if (!token) {
+           // This line redirects the user to Spotify
+           await Spotify.redirectToAuthCodeFlow();
+        }
+      }
+    };
 
-  const [input, setInput] = useState("");
+    initiateLogin();
+  }, []); // Run once on mount
 
-  const [playlistName, setPlaylistName] = useState<string>("My Play List Name Here");
+  const [searchResults, setSearchResults] = useState<Song[]>([]);
 
-  const result = dummySearchResults.filter((song) => song.name.toLocaleLowerCase().includes(input.toLocaleLowerCase()));
+  const [playlistTrack, setPlaylistTrack] = useState<song[]>([]); 
+
+  const executeSearch = async (term: string) => {
+
+    console.log("Serching fro:", term);
+
+    const results = await Spotify.search(term, token);
+
+    setSearchResults(results);
+
+  };
+
+  const [playlistName, setPlaylistName] = useState<string>("");
+
+  const [duplicateErrorId, setDuplicateErrorId] = useState("")
 
  function addTrack (song) {
-  if (playlistTracks.find( track => song.id === track.id)) {
-    alert(`"${song.name} is already in your playlist."`)
+  
+  if (playlistTrack.find( track => song.id === track.id)) {
+    setDuplicateErrorId(song.id);
+    setTimeout(() => setDuplicateErrorId(""), 1000);
   }
   else 
-  setPlalistTracks(prevTracks => [...prevTracks, song])
+  setPlaylistTrack(prevTracks => [...prevTracks, song])
  };
 
  function removeTrack (song) {
-    setPlalistTracks(
+    setPlaylistTrack(
       prevTracks => prevTracks.filter(track => song.id !== track.id)
     )
  };
 
- function savePlaylist () {
-  alert(`"Saving Playlist: ${playlistName} with ${playlistTracks.length} songs."`);
+ async function savePlaylist () {
+  
+  const trackUris = playlistTrack.map(track => track.uri);
+  const success = await Spotify.savePlaylist(playlistName, trackUris, token);
+  if(success) {
+    setPlaylistTrack([]);
+    setPlaylistName("");
+    //alert(`"Saving Playlist: ${playlistName} with ${playlistTrack.length} songs."`);
+  }
+  
  };
 
   return (
     <main className={styles.mainContainer}>
-      <h1 className={styles.title} >Jammming</h1>
-      <SearchBar Input={setInput} /*songList={dummySearchResults}*/ />
+      <h1 className={styles.title} >Remote-Jammming</h1>
+      {profile ? (
+        <div className={styles.userBadge}>
+           Logged in as: <span>{profile.display_name}</span>
+        </div>
+      ) : (
+        <div className={styles.userBadge}>Not Logged In</div>
+      )}
+      <SearchBar  onSearch={executeSearch} />
 
       <div className={styles.appContainer}>
 
-      <SearchResults Result={result} AddTrack={addTrack} />
+      <SearchResults 
+      Result={searchResults} 
+      AddTrack={addTrack} 
+      DuplicateErrorId={duplicateErrorId}
+      />
 
       <PlayList 
       RemoveTrack={removeTrack} 
-      PlaylistTracks={playlistTracks} 
+      PlaylistTracks={playlistTrack} 
       PlaylistName={playlistName} 
       NameInput={setPlaylistName}
       onSave={savePlaylist}

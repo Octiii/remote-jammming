@@ -9,7 +9,7 @@ This project is built using React (with Next.js) and TypeScript, and it connects
 ## 📸 Project Screenshot
 
 
-*(**Note:** Take a screenshot of your app working! Upload it to your GitHub repo and update this link to display it here.)*
+(Soon)
 
 ---
 
