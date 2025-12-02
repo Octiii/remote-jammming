@@ -94,7 +94,7 @@ export const Spotify = {
   // Search function (Requires token to be passed in)
   async search(term: string, token: string) {
     if (!token) return [];
-    const response = await fetch(`https://api.spotify.com/v1/search{encodeURIComponent(term)}&type=track`, {
+    const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     const json = await response.json();
