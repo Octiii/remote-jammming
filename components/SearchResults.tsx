@@ -1,6 +1,6 @@
 // components/SearchResults.tsx
 import React from 'react';
-import styles from './TrackList.module.css'; // Reusing the Playlist styles for consistency
+import styles from './TrackList.module.css'; 
 
 // ... interface definitions ...
 
@@ -20,7 +20,7 @@ interface SearchResultsProps {
 
 export default function SearchResults({ DuplicateErrorId, Result, AddTrack }: SearchResultsProps) {
   return (
-    <div className={styles.playlist}> {/* Reuse the glass panel style */}
+    <div className={styles.playlist}> 
       <h2 style={{ color: 'white', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px' }}>
         Results
       </h2>
@@ -29,7 +29,7 @@ export default function SearchResults({ DuplicateErrorId, Result, AddTrack }: Se
         {Result.map((song) => (
           <div 
             key={song.id} 
-            className={( song.id === DuplicateErrorId) ? styles.errorBlink : styles.trackItem} // Reuse the hover effect
+            className={( song.id === DuplicateErrorId) ? styles.errorBlink : styles.trackItem} 
             onClick={() => AddTrack(song)}
           >
              <div style={{ fontWeight: 'bold' }}>{song.name}</div>

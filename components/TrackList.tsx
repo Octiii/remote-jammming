@@ -1,6 +1,5 @@
 // components/PlayList.tsx
 import React from 'react';
-// Make sure this points to your new CSS module
 import styles from './TrackList.module.css';
 
 interface Song {
@@ -46,7 +45,6 @@ export default function PlayList({
             className={styles.trackItem} // Interactive Hover Effect
             onClick={() => RemoveTrack(song)} 
           >
-            {/* Optional: Make the text look nicer */}
             <div style={{ fontWeight: 'bold' }}>{song.name}</div>
             <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
               {song.artist} | {song.album}

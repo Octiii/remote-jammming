@@ -1,6 +1,5 @@
 // components/SearchBar.tsx
 import React, { useState } from 'react';
-// Make sure this points to your new CSS module
 import styles from './SearchBar.module.css'; 
 
 interface SearchBarProps {
@@ -25,7 +24,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   return (
     <div className={styles.searchBar}>
       <input 
-        className={styles.searchInput} // <--- New Glass Style
+        className={styles.searchInput}
         placeholder="Enter A Song Title" 
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={handleKeyDown}
