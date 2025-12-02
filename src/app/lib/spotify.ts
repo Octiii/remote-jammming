@@ -46,25 +46,49 @@ export const Spotify = {
     document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
   },
 
-  // Step 2: Get Token (Finish Login)
-  async getAccessToken(code: string) {
-    const verifier = localStorage.getItem("verifier");
+  // 2. Get Access Token (Now with Storage Logic!)
+  async getAccessToken(code?: string) {
+    
+    // --- CHECK LOCAL STORAGE FIRST ---
+    const storedToken = localStorage.getItem('access_token');
+    const storedExpiry = localStorage.getItem('token_expiry');
 
-    const params = new URLSearchParams();
-    params.append("client_id", clientId || "");
-    params.append("grant_type", "authorization_code");
-    params.append("code", code);
-    params.append("redirect_uri", redirectUri);
-    params.append("code_verifier", verifier || "");
+    // If we have a token and it hasn't expired yet...
+    if (storedToken && storedExpiry && Date.now() < Number(storedExpiry)) {
+        return storedToken; // Return it immediately! No redirect needed.
+    }
 
-    const result = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: params
-    });
+    // If we are explicitly swapping a code (coming back from Spotify)
+    if (code) {
+        const verifier = localStorage.getItem("verifier");
 
-    const { access_token } = await result.json();
-    return access_token;
+        const params = new URLSearchParams();
+        params.append("client_id", clientId || "");
+        params.append("grant_type", "authorization_code");
+        params.append("code", code);
+        params.append("redirect_uri", redirectUri);
+        params.append("code_verifier", verifier || "");
+
+        const result = await fetch("https://accounts.spotify.com/api/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: params
+        });
+
+        const json = await result.json();
+        const accessToken = json.access_token;
+        const expiresIn = json.expires_in; // Seconds (usually 3600)
+
+        // --- SAVE TO LOCAL STORAGE ---
+        if (accessToken) {
+            const expiryTime = Date.now() + (expiresIn * 1000);
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('token_expiry', expiryTime.toString());
+            return accessToken;
+        }
+    }
+    
+    return null;
   },
 
   // Search function (Requires token to be passed in)

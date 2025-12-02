@@ -4,6 +4,20 @@ import styles from './TrackList.module.css'; // Reusing the Playlist styles for 
 
 // ... interface definitions ...
 
+interface Song {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  uri: string;
+}
+
+interface SearchResultsProps {
+  Result: Song[];                   // Must be a list of Songs
+  AddTrack: (song: Song) => void;      // Must be a function that accepts a Song
+  DuplicateErrorId?: string | null; // Optional string (The '?' means optional)
+}
+
 export default function SearchResults({ DuplicateErrorId, Result, AddTrack }: SearchResultsProps) {
   return (
     <div className={styles.playlist}> {/* Reuse the glass panel style */}

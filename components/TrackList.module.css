@@ -1,14 +1,17 @@
+/* components/PlayList.module.css */
+
 .playlist {
   flex: 1;
-  background: rgba(0, 0, 0, 0.8); /* Dark background */
-  border: 2px solid var(--neon-purple); /* Sharp Neon Border */
-  box-shadow: 0 0 15px var(--neon-purple), inset 0 0 20px rgba(188, 19, 254, 0.2); /* Outer and Inner Glow */
+  background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  backdrop-filter: blur(10px); /* The "Glass" blur effect */
+  border: 2px solid var(--neon-purple); /* Glowing border */
+  box-shadow: 0 0 15px var(--neon-purple), inset 0 0 20px rgba(188, 19, 254, 0.1);
   padding: 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   
-  /* Cut-corner look (clip-path) */
+  /* Sci-Fi "Cut Corner" shape */
   clip-path: polygon(
     0 0, 
     100% 0, 
@@ -18,75 +21,95 @@
   );
 }
 
-/* Input looks like a command line */
+/* The Title Input */
 .playlistInput {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
   font-size: 1.5rem;
   background: transparent;
   border: none;
   border-bottom: 2px solid var(--neon-blue);
   color: var(--neon-blue);
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   margin-bottom: 20px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 .playlistInput:focus {
   outline: none;
   background: rgba(0, 243, 255, 0.1);
+  text-shadow: 0 0 8px var(--neon-blue);
 }
 
+/* Scrollable Container */
 .trackListWrapper {
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 20px;
   border-top: 1px dashed #333;
+  padding-top: 10px;
 }
 
-.errorBlink {
-    background-color: rgba(172, 13, 13, 0.4);
-    padding: 15px;
-    border-bottom: 1px solid #333;
-    cursor: pointer;
-    transition: all 0.1s;
-    border-left: 2px solid transparent;
-}
-
+/* Individual Tracks */
 .trackItem {
-  padding: 15px;
-  border-bottom: 1px solid #333;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
   border-left: 2px solid transparent;
+  color: #ddd;
 }
 
 .trackItem:hover {
-  background-color: rgba(188, 19, 254, 0.1);
-  border-left: 5px solid var(--neon-purple); /* Indicator bar on hover */
+  background-color: rgba(188, 19, 254, 0.15); /* Purple highlight */
+  border-left: 4px solid var(--neon-purple); /* Indicator bar */
+  padding-left: 18px; /* Slide effect */
+  color: #fff;
   text-shadow: 0 0 5px var(--neon-purple);
-  padding-left: 20px; /* Slide text to the right */
 }
 
-/* Cyberpunk Button */
+/* The "Save" Button */
 .saveButton {
   background-color: transparent;
   color: var(--neon-blue);
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  padding: 15px 40px;
+  padding: 15px;
   border: 2px solid var(--neon-blue);
   cursor: pointer;
-  align-self: center;
   text-transform: uppercase;
   letter-spacing: 2px;
   box-shadow: 0 0 10px var(--neon-blue);
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: auto; /* Push to bottom */
 }
 
 .saveButton:hover {
   background-color: var(--neon-blue);
   color: #000;
-  box-shadow: 0 0 20px var(--neon-blue);
+  box-shadow: 0 0 25px var(--neon-blue);
+}
+
+/* The Visual Error Flash (Red) */
+.errorBlink {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.5);
+  cursor: pointer;
+  border-radius: 4px;
+  animation: shake 0.5s ease-in-out;
+  background-color: rgba(255, 0, 0, 0.4); /* Red Background */
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+  color: #fff;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }

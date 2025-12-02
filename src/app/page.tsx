@@ -9,37 +9,59 @@ import { Spotify } from "./lib/spotify"
 
 export default function Home() {
 
+  interface song {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  uri: string;
+}
+
+  interface Song {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  uri: string;
+}
+
   const [token, setToken] = useState<string>("");
    
   const [profile, setProfile] = useState<any>(null);
 
-  useEffect(() => {
-    // This function handles the login logic
-    const initiateLogin = async () => {
-      // 1. Check if we have a code in the URL (Coming back from Spotify)
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
+  // In src/app/page.tsx useEffect:
 
-      if (code) {
-        // We have a code! Swap it for a token.
-        const accessToken = await Spotify.getAccessToken(code);
-        setToken(accessToken);
-        const profileData = await Spotify.getProfile(accessToken);
-        setProfile(profileData);
-        // Clean the URL
-        window.history.pushState({}, "", "/");
-      } else {
-        // 2. No code. Do we have a token already? (Optional: add local storage check here later)
-        // If not, start the login flow.
-        if (!token) {
-           // This line redirects the user to Spotify
-           await Spotify.redirectToAuthCodeFlow();
-        }
-      }
-    };
+useEffect(() => {
+  const runAuth = async () => {
+    // 1. Check if we ALREADY have a valid token in storage
+    const cachedToken = await Spotify.getAccessToken(); 
+    
+    if (cachedToken) {
+        // If yes, use it and load the profile immediately!
+        setToken(cachedToken);
+        const profile = await Spotify.getProfile(cachedToken);
+        setProfile(profile);
+        return; // Stop here, we are done.
+    }
 
-    initiateLogin();
-  }, []); // Run once on mount
+    // 2. If not, check if we are returning from Spotify with a code
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (code) {
+      const newToken = await Spotify.getAccessToken(code);
+      setToken(newToken);
+      const profile = await Spotify.getProfile(newToken);
+      setProfile(profile);
+      window.history.pushState({}, "", "/");
+    } else {
+      // 3. If no cached token AND no code, redirect to login
+      await Spotify.redirectToAuthCodeFlow();
+    }
+  };
+
+  runAuth();
+}, []);
 
   const [searchResults, setSearchResults] = useState<Song[]>([]);
 
@@ -59,7 +81,7 @@ export default function Home() {
 
   const [duplicateErrorId, setDuplicateErrorId] = useState("")
 
- function addTrack (song) {
+ function addTrack (song: song) {
   
   if (playlistTrack.find( track => song.id === track.id)) {
     setDuplicateErrorId(song.id);
@@ -69,7 +91,7 @@ export default function Home() {
   setPlaylistTrack(prevTracks => [...prevTracks, song])
  };
 
- function removeTrack (song) {
+ function removeTrack (song: song) {
     setPlaylistTrack(
       prevTracks => prevTracks.filter(track => song.id !== track.id)
     )
@@ -82,7 +104,6 @@ export default function Home() {
   if(success) {
     setPlaylistTrack([]);
     setPlaylistName("");
-    //alert(`"Saving Playlist: ${playlistName} with ${playlistTrack.length} songs."`);
   }
   
  };

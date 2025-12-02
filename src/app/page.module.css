@@ -1,3 +1,4 @@
+/* src/app/page.module.css */
 .mainContainer {
   max-width: 1400px;
   margin: 0 auto;
@@ -20,30 +21,31 @@
   letter-spacing: 5px;
 }
 
-.userBadge {
-  color: #fff;
-  margin-bottom: 20px;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.9rem;
-  background: rgba(0, 255, 0, 0.1); /* Faint green background */
-  border: 1px solid #00ff00; /* Green border */
-  padding: 5px 15px;
-  border-radius: 50px;
-  text-transform: uppercase;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); /* Green glow */
-}
-
-.userBadge span {
-  font-weight: bold;
-  color: #00ff00; /* Make the name bright green */
-}
-
 .appContainer {
   display: flex;
   justify-content: space-between;
   width: 100%;
   gap: 30px;
   height: 70vh;
+}
+
+/* User Badge Style */
+.userBadge {
+  color: #fff;
+  margin-bottom: 20px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  background: rgba(0, 255, 0, 0.1); 
+  border: 1px solid #00ff00; 
+  padding: 5px 15px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.userBadge span {
+  font-weight: bold;
+  color: #00ff00; 
 }
 
 /* Responsive */
